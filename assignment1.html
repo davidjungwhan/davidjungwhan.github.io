@@ -4,7 +4,7 @@
         <meta charset="utf-8"> 
         <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
 
-        <title>Example Student's HCDE 439 Physical Computing Page!</title> 
+        <title>David's HCDE 439 Physical Computing Page!</title> 
 
         <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
 
@@ -12,7 +12,7 @@
     <body> 
 
         <div class="header">
-            <h1>Example Student's Assignment 1: Blink!</h1>
+            <h1>David's Assignment 1: Blink!</h1>
             <p>
             <img src="gif.gif" width=400>
             </p>
@@ -20,56 +20,44 @@
             <p>
             <img src="Circuit.jpg" width=400>
             </p>
-            <p>
-            Cirucuit!
-            </p>
             <h2>Schematic - Red</h2>
             <p>
             <img src="Red.jpg" width=400>
-            </p>
-            <p>
-            Schematic - Red
             </p>
             <h2>Schematic - Green</h2>
             <p>
             <img src="Green.jpg" width=400>
             </p>
-            <p>
-            Schematic - Green
-            </p>
             <h2>Schematic - Blue</h2>
             <p>
             <img src="Blue.jpg" width=400>
             </p>
-            <p>
-            Schematic - Blue
-            </p>
-            <h2>Code:</h2>
+            <h2>Schematic - Red</h2>
             <p>
             Code:
             </p>
             <p>
-            void setup() {
-              pinMode(9, OUTPUT); // initialize digital pin 9 as an output. This is the Red LED.
-              pinMode(10, OUTPUT);  // initialize digital pin 10 as an output.  This is the Green LED.
-              pinMode(11, OUTPUT);  // initialize digital pin 11 as an output.  This is the Blue LED.
-            }
+            void setup() {<br>
+              &emsp;pinMode(9, OUTPUT); // initialize digital pin 9 as an output. This is the Red LED.<br>
+              &emsp;pinMode(10, OUTPUT);  // initialize digital pin 10 as an output.  This is the Green LED.<br>
+              &emsp;pinMode(11, OUTPUT);  // initialize digital pin 11 as an output.  This is the Blue LED.<br>
+            }<br>
 
-            void loop() {
-              int delayTime = 1000; //  create an int variable to be used for delay. Resets the variable after the while loop.
-              while (delayTime > 0.1) {  //  Repeat the sequence of blinking.
-                digitalWrite(9, HIGH);   // turn the Red LED on.
-                delay(delayTime);        // wait for a little bit.
-                digitalWrite(9, LOW);    // turn the Red LED off.
-                digitalWrite(10, HIGH);  // turn the Green LED on.
-                delay(delayTime);        // wait for a little bit.
-                digitalWrite(10, LOW);   // turn the Green LED off.
-                digitalWrite(11, HIGH);  // turn the Blue LED on.
-                delay(delayTime);        // wait for a little bit.
-                digitalWrite(11, LOW);   // turn the Blue LED off.
-                delayTime = (delayTime/1.2);  //  reduce the delay after every loop
-              }
-            }
+            void loop() {<br>
+              &emsp;int delayTime = 1000; //  create an int variable to be used for delay. Resets the variable after the while loop.<br>
+              &emsp;while (delayTime > 0.1) {  //  Repeat the sequence of blinking.<br>
+                &emsp;&emsp;digitalWrite(9, HIGH);   // turn the Red LED on.<br>
+                &emsp;&emsp;delay(delayTime);        // wait for a little bit.<br>
+                &emsp;&emsp;digitalWrite(9, LOW);    // turn the Red LED off.<br>
+                &emsp;&emsp;digitalWrite(10, HIGH);  // turn the Green LED on.<br>
+                &emsp;&emsp;delay(delayTime);        // wait for a little bit.<br>
+                &emsp;&emsp;digitalWrite(10, LOW);   // turn the Green LED off.<br>
+                &emsp;&emsp;digitalWrite(11, HIGH);  // turn the Blue LED on.<br>
+                &emsp;&emsp;delay(delayTime);        // wait for a little bit.<br>
+                &emsp;&emsp;digitalWrite(11, LOW);   // turn the Blue LED off.<br>
+                &emsp;&emsp;delayTime = (delayTime/1.2);  //  reduce the delay after every loop<br>
+              &emsp;}<br>
+            }<br>
             </p>
         </div>
         

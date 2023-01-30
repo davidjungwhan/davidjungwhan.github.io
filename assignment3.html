@@ -1,0 +1,68 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>David's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Input Output!</h1>
+            <p>
+            <img src="Circuit3.gif" width=600>
+            </p>
+            <h2>Cirucuit!</h2>
+            <p>
+            <img src="Circuit3.jpg" width=600>
+            </p>
+            <h2>Schematic!</h2>
+            <p>
+            <img src="Schematic3.jpg" width=400>
+            </p>
+            <p>
+            The voltage divider is made up of a photoresister (variable, up to 10k ohms) and a 1k ohm resistor.
+            </p>
+            <p>
+            Current through the voltage divider is read and written onto the servo motor.
+            </p>
+            <p>
+            <img src="Schematic3.1.jpg" width=400>
+            </p>
+            <p>
+            The servo motor arm points from 0 degrees to 180 degrees based on the brightness of surrounding environment detected by the photoresistor. The servo motor was flipped upside down when I programmed it, so it actually goes from 180 degree position (dark) to 0 degree position (bright).
+            </p>
+            <h2>Code:</h2>
+            <code>
+            #include "<"Servo.h">"  //import servo library<br>
+            Servo myServo;  //create servo object<br>
+
+            void setup() {<br>
+              &emsp;&emsp;Serial.begin(9600); //begin serial for printing<br>
+              &emsp;&emsp;myServo.attach(11); //attach servo to pin 11<br>
+            }<br>
+
+            void loop() {<br>
+              &emsp;&emsp;int current = analogRead(A0); //read current flowing from the voltage divider<br>
+              &emsp;&emsp;int position = map (current, 0, 1023, 180, 0);  //convert current value to servo position (degrees)<br>
+              &emsp;&emsp;Serial.print("Point to: "); //print <br>
+              &emsp;&emsp;Serial.print(position); //the servo position<br>
+              &emsp;&emsp;Serial.println(" degrees.");  //in degrees<br>
+              &emsp;&emsp;if (position >= 170) {  //if it's really dark<br>
+                &emsp;&emsp;&emsp;&emsp;Serial.println("Oh it's DARK dark."); //you won't see much<br>
+              &emsp;&emsp;}<br>
+              &emsp;&emsp;if (position <= 10) { //if it's really bright<br>
+                &emsp;&emsp;&emsp;&emsp;Serial.println("MY EYES!"); //express pain<br>
+              &emsp;&emsp;}<br>
+              &emsp;&emsp;delay(250);  //wait 250 ms<br>
+              &emsp;&emsp;myServo.write(position);  //rotate hand according to the brightness value. This is in place of <br>&emsp;&emsp;analogWrite();<br>
+            }<br>
+            </code>
+        </div>
+        
+    </body>
+</html>

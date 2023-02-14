@@ -29,10 +29,10 @@
             When a number button is pressed on the remote, the corresponding number is displayed.
             </p>
             <p>
-            I used a 220 ohm resistor so that even when only one of the segments is lit, it won't blow out.
-            V = IR
-            5V = I * 220 ohm
-            I = 23mA
+            I used a 220 ohm resistor so that even when only one of the segments is lit, it won't blow out.<br>
+            V = IR<br>
+            5V = I * 220 ohm<br>
+            I = 23mA<br>
             </p>
             <h2>Code:</h2>
             <code>
@@ -79,9 +79,9 @@
                     &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x16) {  //  if the received data has the command 0x16,<br>
                         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('0');  //  display 0.<br>
                         
-                    &emsp;&emsp;&emsp;&emsp;}        
-                &emsp;&emsp;}
-            }
+                    &emsp;&emsp;&emsp;&emsp;}<br>
+                &emsp;&emsp;}<br>
+            }<br>
             </code>
         </div>
         

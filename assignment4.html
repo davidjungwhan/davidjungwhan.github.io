@@ -36,29 +36,52 @@
             </p>
             <h2>Code:</h2>
             <code>
-            #include "<"Servo.h">"  //import servo library<br>
-            Servo myServo;  //create servo object<br>
+            #define DECODE_NEC  //  use NEC protocol for decoding received value from the IRreceiver.<br>
+            #include <IRremote.h> //  include IRremote library <br>
+            #include <SevenSegmentDisplay.h>  //  include SevenSegmentDisplay library<br>
+            SevenSegmentDisplay display(6, 5, 3, 2, 9, 7, 8, 4, false); //  initialize the seven segment display. Connect each segment to corresponding pins. False for common anode, because this is a common cathode display.
+            int IR_RECEIVE_PIN = 11;  // IR receive pin will be at pin 11.<br>
 
             void setup() {<br>
-              &emsp;&emsp;Serial.begin(9600); //begin serial for printing<br>
-              &emsp;&emsp;myServo.attach(11); //attach servo to pin 11<br>
+                &emsp;&emsp;IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // Start the receiver, enable feedback LED (this will be from pin 11)<br>
             }<br>
 
             void loop() {<br>
-              &emsp;&emsp;int current = analogRead(A0); //read current flowing from the voltage divider<br>
-              &emsp;&emsp;int position = map (current, 0, 1023, 180, 0);  //convert current value to servo position (degrees)<br>
-              &emsp;&emsp;Serial.print("Point to: "); //print <br>
-              &emsp;&emsp;Serial.print(position); //the servo position<br>
-              &emsp;&emsp;Serial.println(" degrees.");  //in degrees<br>
-              &emsp;&emsp;if (position >= 170) {  //if it's really dark<br>
-                &emsp;&emsp;&emsp;&emsp;Serial.println("Oh it's DARK dark."); //you won't see much<br>
-              &emsp;&emsp;}<br>
-              &emsp;&emsp;if (position <= 10) { //if it's really bright<br>
-                &emsp;&emsp;&emsp;&emsp;Serial.println("MY EYES!"); //express pain<br>
-              &emsp;&emsp;}<br>
-              &emsp;&emsp;delay(250);  //wait 250 ms<br>
-              &emsp;&emsp;myServo.write(position);  //rotate hand according to the brightness value. This is in place of <br>&emsp;&emsp;analogWrite();<br>
-            }<br>
+                &emsp;&emsp;if (IrReceiver.decode()) {  // if the IRreceiver receives data, decode it.<br>
+                    &emsp;&emsp;&emsp;&emsp;IrReceiver.resume(); // enable receiving of the next value.<br>
+                    &emsp;&emsp;&emsp;&emsp;if (IrReceiver.decodedIRData.command == 0xC) {  //  if the received data has the command 0xC,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('1');  //  display 1.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x18) {  //  if the received data has the command 0x18,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('2');  //  display 2.<br>
+
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x5E) {  //  if the received data has the command 0x5E,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('3');  //  display 3.<br>
+
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x8) {  //  if the received data has the command 0x8,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('4');  //  display 4.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x1C) {  //  if the received data has the command 0x1C,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('5');  //  display 5.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x5A) {  //  if the received data has the command 0x5A,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('6');  //  display 6.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x42) {  //  if the received data has the command 0x42,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('7');  //  display 7.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x52) {  //  if the received data has the command 0x52,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('8');  //  display 8.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x4A) {  //  if the received data has the command 0x4A,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('9');  //  display 9.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;} else if (IrReceiver.decodedIRData.command == 0x16) {  //  if the received data has the command 0x16,<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;display.displayCharacter('0');  //  display 0.<br>
+                        
+                    &emsp;&emsp;&emsp;&emsp;}        
+                &emsp;&emsp;}
+            }
             </code>
         </div>
         

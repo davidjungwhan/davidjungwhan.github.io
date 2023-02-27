@@ -1,0 +1,177 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>David's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Talking to the Web!</h1>
+            <p>
+            <img src="Circuit6.gif" width=600>
+            </p>
+            <h2>Cirucuit!</h2>
+            <p>
+            <img src="Circuit6.jpg" width=600>
+            </p>
+            <h2>Schematic!</h2>
+            <p>
+            <img src="Schematic6.jpg" width=400>
+            </p>
+            <p>
+            1Megaohm resistor is used as a pull-up resistor for the buttons. 220Ohm resistor is used for the white LED to limit current under 20mA.<br>
+            </p>
+            <p>
+            The Arduino has two buttons, left and right. If either button is pressed, P5 responds.
+            From P5, any keypress will be sent back to the arduino to change the brightness of the LED at pin 5.<br>
+            </p>
+            <h2>Arduino Code:</h2>
+            <code>
+            void setup() {<br>
+                &emsp;&emsp;Serial.begin(9600); // begin serial<br>
+                &emsp;&emsp;pinMode(2, INPUT);  // buttonR input<br>
+                &emsp;&emsp;pinMode(13, INPUT); // buttonL input<br>
+
+                &emsp;&emsp;Serial.setTimeout(10); // set the timeout for parseInt<br>
+                &emsp;&emsp;pinMode(5, OUTPUT); // powers LED from web input<br>
+            }<br>
+
+            void loop() {<br>
+                &emsp;&emsp;int buttonL = digitalRead(13);  // detects left button input<br>
+                &emsp;&emsp;int buttonR = digitalRead(2); // detects right button input<br>
+                &emsp;&emsp;Serial.print("[");  //  turn into JSON<br>
+                &emsp;&emsp;Serial.print(buttonL);  //  turn into JSON<br>
+                &emsp;&emsp;Serial.print(",");  //  turn into JSON<br>
+                &emsp;&emsp;Serial.print(buttonR);  //  turn into JSON<br>
+                &emsp;&emsp;Serial.println("]");  //  turn into JSON<br>
+                &emsp;&emsp;delay(100); //  wait a little bit<br>
+
+                &emsp;&emsp;if (Serial.available() > 0) {   // if there is serial data from the web<br>
+                    &emsp;&emsp;&emsp;&emsp;int inByte = Serial.read(); // read it <br>
+                    &emsp;&emsp;&emsp;&emsp;Serial.write(inByte);   // write it as raw binary data<br>
+                    &emsp;&emsp;&emsp;&emsp;analogWrite(5, inByte); // use it to set the LED brightness<br>
+                &emsp;&emsp;}<br>
+            }<br>
+
+            <h2>P5 Code:</h2>
+            <code>
+            var serial; // variable to hold an instance of the serialport library<br>
+            var portName = '/dev/cu.usbmodem2101'; //rename to the name of your port<br>
+            var datain; //some data coming in over serial!<br>
+            var xPos = 0;<br>
+            var dataarray = [0,0];  // variable to hold the object array sent from arduino<br>
+
+
+            function serialEvent() {<br>
+              &emsp;&emsp;if (serial.available()) {<br>
+                &emsp;&emsp;&emsp;&emsp;var datastring = serial.readLine(); // readin some serial<br>
+                &emsp;&emsp;&emsp;&emsp;var newarray; // holds array from arduino<br>
+                &emsp;&emsp;&emsp;&emsp;try {<br>
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;newarray = JSON.parse(datastring); // can we parse the serial<br>
+                &emsp;&emsp;if (typeof newarray == 'object') {<br>
+                      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;dataarray = newarray; // assign the array into dataarray<br>
+                &emsp;&emsp;&emsp;&emsp;}<br>
+                &emsp;&emsp;&emsp;&emsp;console.log("got back " + datastring);<br>
+                &emsp;&emsp;&emsp;&emsp;} catch(err) {<br>
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;//console.error(err);<br>
+                }<br>
+              }<br>
+            }<br>
+
+            function keyPressed() {<br>
+                &emsp;&emsp;//console.log("writing key");<br>
+                &emsp;&emsp;serial.write(key);<br>
+            }<br>
+
+
+
+            function setup() {<br>
+              &emsp;&emsp;serial = new p5.SerialPort();       // make a new instance of the serialport library<br>
+              &emsp;&emsp;serial.on('list', printList);       // set a callback function for the serialport list event<br>
+              &emsp;&emsp;serial.on('connected', serverConnected); // callback for connecting to the server<br>
+              &emsp;&emsp;serial.on('open', portOpen);        // callback for the port opening<br>
+              &emsp;&emsp;serial.on('data', serialEvent);     // callback for when new data arrives<br>
+              &emsp;&emsp;serial.on('error', serialError);    // callback for errors<br>
+              &emsp;&emsp;serial.on('close', portClose);      // callback for the port closing<br>
+
+              &emsp;&emsp;serial.list();                      // list the serial ports<br>
+              &emsp;&emsp;serial.open(portName);              // open a serial port<br>
+              &emsp;&emsp;createCanvas(1200, 800);<br>
+              &emsp;&emsp;background(0x08, 0x16, 0x40);<br>
+            }<br>
+
+            // get the list of ports:<br>
+            function printList(portList) {<br>
+                // portList is an array of serial port names<br>
+                &emsp;&emsp;for (var i = 0; i < portList.length; i++) {<br>
+                    // Display the list the console:<br>
+                    &emsp;&emsp;&emsp;&emsp;print(i + " " + portList[i]);<br>
+                &emsp;&emsp;}<br>
+            }<br>
+
+            function serverConnected() {<br>
+                &emsp;&emsp;print('connected to server.');<br>
+            }<br>
+
+            function portOpen() {<br>
+              &emsp;&emsp;print('the serial port opened.')<br>
+            }<br>
+
+            function serialError(err) {<br>
+              &emsp;&emsp;//print('Something went wrong with the serial port. ' + err);<br>
+              &emsp;&emsp;print(err);<br>
+            }<br>
+
+            function portClose() {<br>
+              &emsp;&emsp;print('The serial port closed.');<br>
+            }<br>
+
+            // function serialEvent() {<br>
+            //   if (serial.available()) {<br>
+            //     let maybeNumber = parseInt(serial.readLine());<br>
+            //     if (!isNaN(maybeNumber)) {<br>
+            //         datain = maybeNumber;<br>
+            //         console.log(datain);<br>
+            //     }<br>
+            //   }<br>
+            // }<br>
+
+            function graphData(newData) {<br>
+              &emsp;&emsp;// map the range of the input to the window height:<br>
+              &emsp;&emsp;var yPos = map(newData, 0, 255, 0, height);<br>
+              &emsp;&emsp;// draw the line in a pretty color:<br>
+              &emsp;&emsp;stroke(255, 0, 80);<br>
+              &emsp;&emsp;line(xPos, height, xPos, height - yPos);<br>
+              &emsp;&emsp;// at the edge of the screen, go back to the beginning:<br>
+              &emsp;&emsp;if (xPos >= width) {<br>
+                &emsp;&emsp;&emsp;&emsp;xPos = 0;<br>
+                &emsp;&emsp;&emsp;&emsp;// clear the screen by resetting the background:<br>
+                &emsp;&emsp;&emsp;&emsp;background(0x08, 0x16, 0x40);<br>
+              &emsp;&emsp;} else {<br>
+                &emsp;&emsp;&emsp;&emsp;// increment the horizontal position for the next reading:<br>
+                &emsp;&emsp;&emsp;&emsp;xPos++;<br>
+            &emsp;&emsp;}<br>
+            }<br>
+
+            function draw() {<br>
+              &emsp;&emsp;background(0);<br>
+              &emsp;&emsp;fill(255);<br>
+
+              &emsp;&emsp;if (dataarray[0] == 1 || dataarray[1] == 1) { // if the dataarray shows buttonpress<br>
+                  &emsp;&emsp;&emsp;&emsp;text("button pressed: YESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYES", 30,30);  //say yes<br>
+              &emsp;&emsp;} else { // if no button is pressed<br>
+                  &emsp;&emsp;&emsp;&emsp;text("button pressed: NO", 30,30); //say no<br>
+              &emsp;&emsp;}<br>
+            }<br>
+
+            </code>
+        </div>
+        
+    </body>
+</html>

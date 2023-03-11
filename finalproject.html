@@ -12,10 +12,121 @@
     <body> 
 
         <div class="header">
-            <h1>Final Project!</h1>
+            <h1>Get Clapped!</h1>
             <p>
-            <img src="FinalProjectSlide.png" width=600>
+            <img src="Final.gif" width=600>
             </p>
+            <p>
+            The light box listens to loud noises (clap!) and turns the light on and off. <br>
+            </p>
+            <h2>Cirucuit!</h2>
+            <p>
+            <img src="FinalCircuit.jpg" width=600>
+            </p>
+            <p>
+            The circuit was soldered onto a perf board. <br>
+            </p>
+            <h2>Schematic!</h2>
+            <p>
+            <img src="FinalSchematic.jpg" width=400>
+            </p>
+            <p>
+            The sound sensor (microphone) can be connected to either the analog in or the digital in. <br>
+            Becuase the sound sensor wasn't very accurate, I opted for digital input. <br>
+            Pin 9 is used to controll the LED.
+            </p>
+            <h2>Process Log!</h2>
+            <p>
+            The LED required a 12V power source, so I used a 12V battery pack with a barrel jack and a switch. <br>
+            The Arduino, perf board, and the battery is in a housing, whose exterior will be wrapped in an LED strip. <br>
+            </p>
+            <p>
+            <img src="Pic1.jpg" width=400>
+            </p>
+            <p>
+            I lasercut a thin sheet of wood to minimize the form factor. <br>
+            </p>
+            <p>
+            <img src="Pic2.jpg" width=400>
+            </p>
+            <p>
+            The exterior is made with acrylic sheets to let light shine through. The bottom housing is the same material, just opaque. <br>
+            The bottom housing allows space for the sensor and the barrel jack. The sensor needs to be accessible, <br>
+            since sensitivity adjutments are necessary. <br>
+            With access to ports at the bottom, the user can upload code to theh arduino or charge the battery pack. <br>
+            </p>
+            <p>
+            <img src="Pic3.jpg" width=400>
+            </p>
+            <p>
+            Components fitted inside the wooden housing.<br>
+            </p>
+            <p>
+            <img src="Pic5.jpg" width=400>
+            </p>
+            <p>
+            <img src="Pic4.jpg" width=400>
+            </p>
+            <p>
+            The bottom housing has an opening for the microphone. Through the bottom, the user can access all of the ports necessary.<br>
+            </p>
+            <p>
+            <img src="Hero.jpg" width=400>
+            </p>
+            <p>
+            <br>
+            <a href="https://www.youtube.com/watch?v=wIcCJedSpFQ&ab_channel=DavidSong">Watch the video demo!</a>
+            </p>
+            <h2>Code:</h2>
+            <code>
+
+            const int sensorPin = 2;  // pin that the sensor is attached to
+            const int ledPin = 9;      // pin that the LED is attached to
+
+            // variables:
+            int sensorValue = 0;   // the sensor value
+            int sensorMin = 1023;  // minimum sensor value
+            int sensorMax = 0;     // maximum sensor value
+            int brightness = LOW; // state of the LED
+
+            void setup() {  // standard calibration example code
+              &emsp;&emsp;&emsp;&emsp;// turn on LED to signal the start of the calibration period:
+              &emsp;&emsp;&emsp;&emsp;pinMode(ledPin, OUTPUT);  // intialize the LED pin
+              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, HIGH); // turn on LED pin
+
+              &emsp;&emsp;&emsp;&emsp;// calibrate during the first five seconds
+              &emsp;&emsp;&emsp;&emsp;while (millis() < 5000) { // for 5 seconds
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorValue = digitalRead(sensorPin); //read in value from the (sound)sensor
+
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// record the maximum sensor value
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if (sensorValue > sensorMax) {  // if the value is larger than the largest recorded value so far,
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorMax = sensorMin;  // set the value to be the new max value
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}
+
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// record the minimum sensor value
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if (sensorValue < sensorMin) {  // if the value is smaller than the smallest recorded value so far,
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorMin = sensorValue;  // set the value to be the new minimum value
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}
+              &emsp;&emsp;&emsp;&emsp;}
+
+              &emsp;&emsp;&emsp;&emsp;// signal the end of the calibration period
+              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, LOW);  // turn the led off
+            }
+
+            void loop() {
+              &emsp;&emsp;&emsp;&emsp;// read the sensor:
+              &emsp;&emsp;&emsp;&emsp;sensorValue = digitalRead(sensorPin); // read in value from the (sound)sensor
+
+              &emsp;&emsp;&emsp;&emsp;if (sensorValue == 1 && brightness == LOW) {  // if loud sound is detected and the LED is currently off,
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;brightness = HIGH;  // set the state of the LED to on
+              &emsp;&emsp;&emsp;&emsp;} else if (sensorValue == 1 && brightness == HIGH) {  //  if loud sound is detected and the LED is currently on,
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;brightness = LOW; // set the state of the LEd to off
+              &emsp;&emsp;&emsp;&emsp;}
+
+              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, brightness); // update the state of the LED
+            }
+ 
+
             </code>
         </div>
         

@@ -50,7 +50,7 @@
             <img src="Pic2.jpg" width=400>
             </p>
             <p>
-            The exterior is made with acrylic sheets to let light shine through. The bottom housing is the same material, just opaque. <br>
+            The exterior is made with acrylic sheets (to which I will add a frosted finish) to let light shine through. The bottom housing is the same material, just white. <br>
             The bottom housing allows space for the sensor and the barrel jack. The sensor needs to be accessible, <br>
             since sensitivity adjutments are necessary. <br>
             With access to ports at the bottom, the user can upload code to theh arduino or charge the battery pack. <br>
@@ -80,51 +80,51 @@
             <h2>Code:</h2>
             <code>
 
-            const int sensorPin = 2;  // pin that the sensor is attached to
-            const int ledPin = 9;      // pin that the LED is attached to
+            const int sensorPin = 2;  // pin that the sensor is attached to<br>
+            const int ledPin = 9;      // pin that the LED is attached to<br>
 
-            // variables:
-            int sensorValue = 0;   // the sensor value
-            int sensorMin = 1023;  // minimum sensor value
-            int sensorMax = 0;     // maximum sensor value
-            int brightness = LOW; // state of the LED
+            // variables:<br>
+            int sensorValue = 0;   // the sensor value<br>
+            int sensorMin = 1023;  // minimum sensor value<br>
+            int sensorMax = 0;     // maximum sensor value<br>
+            int brightness = LOW; // state of the LED<br>
 
-            void setup() {  // standard calibration example code
-              &emsp;&emsp;&emsp;&emsp;// turn on LED to signal the start of the calibration period:
-              &emsp;&emsp;&emsp;&emsp;pinMode(ledPin, OUTPUT);  // intialize the LED pin
-              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, HIGH); // turn on LED pin
+            void setup() {  // standard calibration example code<br>
+              &emsp;&emsp;&emsp;&emsp;// turn on LED to signal the start of the calibration period:<br>
+              &emsp;&emsp;&emsp;&emsp;pinMode(ledPin, OUTPUT);  // intialize the LED pin<br>
+              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, HIGH); // turn on LED pin<br>
 
-              &emsp;&emsp;&emsp;&emsp;// calibrate during the first five seconds
-              &emsp;&emsp;&emsp;&emsp;while (millis() < 5000) { // for 5 seconds
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorValue = digitalRead(sensorPin); //read in value from the (sound)sensor
+              &emsp;&emsp;&emsp;&emsp;// calibrate during the first five seconds<br>
+              &emsp;&emsp;&emsp;&emsp;while (millis() < 5000) { // for 5 seconds<br>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorValue = digitalRead(sensorPin); //read in value from the (sound)sensor<br>
 
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// record the maximum sensor value
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if (sensorValue > sensorMax) {  // if the value is larger than the largest recorded value so far,
-                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorMax = sensorMin;  // set the value to be the new max value
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// record the maximum sensor value<br>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if (sensorValue > sensorMax) {  // if the value is larger than the largest recorded value so far,<br>
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorMax = sensorMin;  // set the value to be the new max value<br>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}<br>
 
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// record the minimum sensor value
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if (sensorValue < sensorMin) {  // if the value is smaller than the smallest recorded value so far,
-                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorMin = sensorValue;  // set the value to be the new minimum value
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}
-              &emsp;&emsp;&emsp;&emsp;}
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// record the minimum sensor value<br>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;if (sensorValue < sensorMin) {  // if the value is smaller than the smallest recorded value so far,<br>
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sensorMin = sensorValue;  // set the value to be the new minimum value<br>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}<br>
+              &emsp;&emsp;&emsp;&emsp;}<br>
 
-              &emsp;&emsp;&emsp;&emsp;// signal the end of the calibration period
-              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, LOW);  // turn the led off
-            }
+              &emsp;&emsp;&emsp;&emsp;// signal the end of the calibration period<br>
+              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, LOW);  // turn the led off<br>
+            }<br>
 
-            void loop() {
-              &emsp;&emsp;&emsp;&emsp;// read the sensor:
-              &emsp;&emsp;&emsp;&emsp;sensorValue = digitalRead(sensorPin); // read in value from the (sound)sensor
+            void loop() {<br>
+              &emsp;&emsp;&emsp;&emsp;// read the sensor:<br>
+              &emsp;&emsp;&emsp;&emsp;sensorValue = digitalRead(sensorPin); // read in value from the (sound)sensor<br>
 
-              &emsp;&emsp;&emsp;&emsp;if (sensorValue == 1 && brightness == LOW) {  // if loud sound is detected and the LED is currently off,
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;brightness = HIGH;  // set the state of the LED to on
-              &emsp;&emsp;&emsp;&emsp;} else if (sensorValue == 1 && brightness == HIGH) {  //  if loud sound is detected and the LED is currently on,
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;brightness = LOW; // set the state of the LEd to off
-              &emsp;&emsp;&emsp;&emsp;}
+              &emsp;&emsp;&emsp;&emsp;if (sensorValue == 1 && brightness == LOW) {  // if loud sound is detected and the LED is currently off,<br>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;brightness = HIGH;  // set the state of the LED to on<br>
+              &emsp;&emsp;&emsp;&emsp;} else if (sensorValue == 1 && brightness == HIGH) {  //  if loud sound is detected and the LED is currently on,<br>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;brightness = LOW; // set the state of the LEd to off<br>
+              &emsp;&emsp;&emsp;&emsp;}<br>
 
-              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, brightness); // update the state of the LED
-            }
+              &emsp;&emsp;&emsp;&emsp;digitalWrite(ledPin, brightness); // update the state of the LED<br>
+            }<br>
  
 
             </code>
